@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Harry Potter Quiz Box</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600&display=swap">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: 'Baloo 2', sans-serif;
+            background-color: #f0e68c; /* Hogwarts parchment color */
+            color: black;
+            flex-direction: column;
+            margin: 0;
+            position: relative;
+        }
+
+        #quiz-headings {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        #yellow-box {
+            width: 200px;
+            height: 200px;
+            background-color: #fed405;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            cursor: pointer;
+            color: black;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-align: center;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            border: 5px solid black;
+            text-transform: uppercase;
+        }
+
+        .color-boxes {
+            display: flex;
+            justify-content: space-between;
+            width: 220px;
+        }
+
+        .color-box {
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        #green-box {
+            background-color: #7fd15a;
+        }
+
+        #orange-box {
+            background-color: #ff914d;
+        }
+
+        #red-box {
+            background-color: #ee1d23;
+        }
+
+        #purple-box {
+            background-color: #8456e5;
+        }
+
+        #question-answer {
+            margin-top: 20px;
+            font-size: 18px;
+            text-align: center;
+        }
+
+        #tagline {
+            margin-top: 40px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        #go-back-button {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            background-color: transparent;
+            color: black;
+            border: 2px solid black;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="quiz-headings"></div>
+    <div id="yellow-box">HARRY POTTER</div>
+    <div class="color-boxes">
+        <div id="green-box" class="color-box"></div>
+        <div id="orange-box" class="color-box"></div>
+        <div id="red-box" class="color-box"></div>
+        <div id="purple-box" class="color-box"></div>
+    </div>
+    <div id="question-answer"></div>
+    <div id="tagline">QuizHeads. The forever changing trivia board game!</div>
+    <a id="go-back-button" href="https://quizheads.co.uk/masterquizzes">GO BACK</a>
+
+    <script>
+        const yellowBox = document.getElementById("yellow-box");
+        const greenBox = document.getElementById("green-box");
+        const orangeBox = document.getElementById("orange-box");
+        const redBox = document.getElementById("red-box");
+        const purpleBox = document.getElementById("purple-box");
+        const questionAnswerDiv = document.getElementById("question-answer");
+
+        // Array of Harry Potter trivia questions and answers
+        const harryPotterQuestions = [
+            { question: "What house is Harry Potter sorted into?", answer: "Gryffindor" },
+            { question: "Who is the Half-Blood Prince?", answer: "Severus Snape" },
+            { question: "What position does Harry play on his Quidditch team?", answer: "Seeker" },
+            { question: "Who is the author of 'The Tales of Beedle the Bard'?", answer: "Beedle the Bard" },
+            { question: "What is the name of the Weasley's house?", answer: "The Burrow" },
+            { question: "Who gave Harry his Firebolt broomstick?", answer: "Sirius Black" },
+            { question: "What is the name of Hagrid’s giant half-brother?", answer: "Grawp" },
+            { question: "What is the name of Harry Potter's owl?", answer: "Hedwig" },
+            { question: "What shape is Harry Potter's scar?", answer: "A lightning bolt" },
+            { question: "Who was the headmaster of Hogwarts before Dumbledore?", answer: "Armando Dippet" },
+            { question: "What potion grants good luck?", answer: "Felix Felicis" },
+            { question: "Who was responsible for the creation of the Chamber of Secrets?", answer: "Salazar Slytherin" },
+            { question: "What creature is Aragog?", answer: "A giant spider" },
+            { question: "Who is the master of the Elder Wand?", answer: "Harry Potter" },
+            { question: "What magical object shows the deepest desires of one's heart?", answer: "The Mirror of Erised" },
+            { question: "What is Lord Voldemort's real name?", answer: "Tom Marvolo Riddle" },
+            { question: "Who kills Bellatrix Lestrange?", answer: "Molly Weasley" },
+            { question: "What is the name of the poltergeist at Hogwarts?", answer: "Peeves" },
+            { question: "What is the incantation for the Patronus Charm?", answer: "Expecto Patronum" },
+            { question: "Who was the first goblin Harry ever met?", answer: "Griphook" },
+            { question: "What was Harry Potter's mother's name?", answer: "Lily Potter" },
+            { question: "Who is Harry Potter’s godfather?", answer: "Sirius Black" },
+            { question: "Who is the Slytherin house ghost?", answer: "The Bloody Baron" },
+            { question: "What plant does Harry use in the second task of the Triwizard Tournament?", answer: "Gillyweed" },
+            { question: "Which animal can Professor McGonagall transform into?", answer: "A cat" },
+            { question: "What is the core of Harry Potter’s wand?", answer: "A phoenix feather" },
+            { question: "Who was the Defense Against the Dark Arts teacher in Harry’s sixth year?", answer: "Severus Snape" },
+            { question: "Who killed Dobby the house elf?", answer: "Bellatrix Lestrange" },
+            { question: "What is the name of Draco Malfoy's son?", answer: "Scorpius Malfoy" },
+            { question: "What is Hermione Granger's middle name?", answer: "Jean" },
+            { question: "What is the name of the wizarding prison?", answer: "Azkaban" },
+            { question: "What is the spell to disarm an opponent?", answer: "Expelliarmus" },
+            { question: "Who teaches Potions at Hogwarts after Severus Snape?", answer: "Horace Slughorn" },
+            { question: "Who is the founder of the House of Gryffindor?", answer: "Godric Gryffindor" },
+            { question: "What was Voldemort's final Horcrux?", answer: "Nagini" },
+            { question: "What form does Harry Potter’s Patronus take?", answer: "A stag" },
+            { question: "Who is the potions master in Harry Potter's first year?", answer: "Severus Snape" },
+            { question: "What does the Marauder's Map show?", answer: "The location of everyone in Hogwarts" },
+            { question: "What creature is Buckbeak?", answer: "A Hippogriff" },
+            { question: "What is the name of the snake that Harry can communicate with?", answer: "Nagini" },
+            { question: "What is the symbol for the Deathly Hallows?", answer: "A line, circle, and triangle" },
+            { question: "What spell would you use to summon something?", answer: "Accio" },
+            { question: "Who was Harry’s first kiss?", answer: "Cho Chang" },
+            { question: "Which magical creature pulls the carriages at Hogwarts?", answer: "Thestrals" },
+            { question: "Who did Fleur Delacour marry?", answer: "Bill Weasley" },
+            { question: "Who was the youngest Seeker in a century?", answer: "Harry Potter" },
+            { question: "What charm is used to levitate objects?", answer: "Wingardium Leviosa" },
+            { question: "Who is known as 'The Boy Who Lived'?", answer: "Harry Potter" }
+        ];
+
+        let shuffledQuestions = [];
+        let questionIndex = 0;
+
+        // Shuffle the questions array
+        function shuffleArray(array) {
+            let currentIndex = array.length, randomIndex;
+            while (currentIndex !== 0) {
+                randomIndex = Math.floor(Math.random() * currentIndex);
+                currentIndex--;
+                [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+            }
+            return array;
+        }
+
+        // Initialize questions
+        function initializeQuestions() {
+            shuffledQuestions = shuffleArray([...harryPotterQuestions]);
+            questionIndex = 0;
+            displayQuestion();
+        }
+
+        // Function to display the current question
+        function displayQuestion() {
+            if (shuffledQuestions.length === 0) {
+                questionAnswerDiv.innerHTML = "<strong>No more questions!</strong>";
+                return;
+            }
+            const currentQA = shuffledQuestions[questionIndex];
+            questionAnswerDiv.innerHTML = `<strong>Question:</strong> ${currentQA.question}<br><strong>Answer:</strong> ${currentQA.answer}`;
+        }
+
+        // Change color of the yellow box when a color box is clicked
+        greenBox.addEventListener("click", () => {
+            yellowBox.style.backgroundColor = "#7FD15A";
+        });
+
+        orangeBox.addEventListener("click", () => {
+            yellowBox.style.backgroundColor = "#FF914D";
+        });
+
+        redBox.addEventListener("click", () => {
+            yellowBox.style.backgroundColor = "#EE1D23";
+        });
+
+        purpleBox.addEventListener("click", () => {
+            yellowBox.style.backgroundColor = "#8456E5";
+        });
+
+        // Generate a random question and display it when the yellow box is clicked
+        yellowBox.addEventListener("click", () => {
+            questionIndex = (questionIndex + 1) % shuffledQuestions.length;
+            displayQuestion();
+        });
+
+        // Initialize questions on page load
+        window.onload = initializeQuestions;
+    </script>
+
+</body>
+</html>
